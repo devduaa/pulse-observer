@@ -1,53 +1,79 @@
 
 # Pulse Observer ⚡
 
-A lightweight, real-time Node.js performance monitoring tool that displays **Event Loop Lag**, **Heap Memory Usage**, and **Slow APIs** directly in your terminal. Ideal for development and quick debugging in Express-based applications.
+[![npm version](https://img.shields.io/npm/v/pulse-observer.svg?style=flat-square)](https://www.npmjs.com/package/pulse-observer)
+[![npm downloads](https://img.shields.io/npm/dm/pulse-observer.svg?style=flat-square)](https://www.npmjs.com/package/pulse-observer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/devduaa/pulse-observer?style=flat-square)](https://github.com/devduaa/pulse-observer)
 
+A lightweight, real-time Node.js performance monitoring tool that displays **Event Loop Lag**, **Heap Memory Usage**, and **Slow APIs** directly in your terminal. Perfect for development and quick debugging in Express-based applications.
+
+![Pulse Observer in action](https://via.placeholder.com/800x400?text=Pulse+Observer+Terminal+Output)  
+*(Replace this placeholder with a real screenshot of the terminal output – upload it to the repo and update the link.)*
 
 ## Features
 
-- Real-time **Event Loop Lag** monitoring (detects when the event loop is blocked)
-- **Heap Used** memory tracking (helps spot memory leaks early)
-- Top 5 **Slow APIs** list (only APIs taking >50ms, with color coding: green/yellow/red)
-- Simple Express middleware integration (measures time automatically for all routes)
+- Real-time **Event Loop Lag** monitoring (detects event loop blocks)
+- **Heap Used** memory tracking (helps catch memory leaks early)
+- Top 5 **Slow APIs** list (only >50ms, color-coded: green/yellow/red)
+- Simple Express middleware integration (auto-measures all routes)
 - Colorful terminal output using Chalk
-- Zero external services or heavy dependencies (only Chalk is required)
+- Zero external services or heavy dependencies
 
 ## Installation
 
 ```bash
 npm install pulse-observer
-Or with Yarn:
+# or
 yarn add pulse-observer
+## Installation
+
 
 Note: This library uses Chalk v4 (CommonJS compatible). If Chalk v5 gets installed by mistake (ESM-only), downgrade it:
 Bashnpm install chalk@4
 
-// Quick Start (Express App)
-JavaScript// server.js or app.js
+CommonJS (require)
 const express = require('express');
 const app = express();
 
-// Import and initialize Pulse Observer
 const Pulse = require('pulse-observer');
-
 const pulse = new Pulse({
-  interval: 1000, // How often to refresh the display (in ms)
+  interval: 1000, // refresh every 1 second (default)
 });
 
-app.use(pulse.middleware());  // ← This line is required!
+app.use(pulse.middleware());  // ← Required!
 
 app.use(express.json());
 
-// Example route (will show up if slow)
+// Example slow route
 app.post('/api/user/create', async (req, res) => {
-  // Your logic here...
+  // your logic...
   res.json({ success: true });
 });
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+app.listen(3000, () => console.log('Server running'));
+
+ESM (import)
+import express from 'express';
+const app = express();
+
+import Pulse from 'pulse-observer';
+const pulse = new Pulse({
+  interval: 1000,
 });
+
+app.use(pulse.middleware());
+
+app.use(express.json());
+
+// Example route...
+app.listen(3000, () => console.log('Server running'));
+
+
+//Slow API Colors
+Time RangeColorMeaning>100msRed (bold)
+Critical – investigate50–100msYellowMedium 
+consider optimizing<50msGreenFast – no issue
 
 Once the server starts and you hit some routes (e.g., via Postman or browser), you'll see real-time output in the terminal like this:
 text⚡ Pulse Observer
@@ -57,13 +83,12 @@ Slow APIs (only >50ms):
 POST /api/user/create → 110.7ms
 
 
-//Customization Options
-
-You can pass options when creating the Pulse instance:
+Customization
+Pass options to the Pulse constructor:
 JavaScriptconst pulse = new Pulse({
-  interval: 2000,         // Refresh interval in milliseconds (default: 1000)
-  // threshold: 100       // Future feature: only show APIs slower than this value
-  // renderer: 'terminal' // Currently only terminal is supported
+  interval: 2000,         // Refresh interval in ms
+  // threshold: 100       // Future: only show > this value
+  // renderer: 'terminal' // Currently only terminal
 });
 
 
@@ -76,12 +101,25 @@ const ms = Number(process.hrtime.bigint() - start) / 1e6;
 console.log('This block took:', ms.toFixed(2), 'ms');
 
 
-Why Use Pulse Observer?
+Why Pulse Observer?
 
-No external dashboards, Prometheus, or paid services needed
-Real-time feedback in your terminal while developing
+No external dashboards or paid tools required
+Instant terminal feedback during development
 Extremely lightweight (~30MB heap usage)
-Open for contributions (future ideas: file logging, alerts, web dashboard)
+Open for contributions
+
+Future Plans
+
+Configurable slow API threshold
+Web dashboard renderer
+File logging & alerts
+Auto-suggestions for slow routes
+
+Contributing
+Contributions are welcome!
+
+Open an issue for bugs/ideas
+Fork → Branch → Commit → Push → Pull Request
 
 License
-ISC License – feel free to use, modify, and distribute.
+MIT License – feel free to use, modify, and distribute.
