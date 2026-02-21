@@ -8,8 +8,6 @@
 
 A lightweight, real-time Node.js performance monitoring tool that displays **Event Loop Lag**, **Heap Memory Usage**, and **Slow APIs** directly in your terminal. Perfect for development and quick debugging in Express-based applications.
 
-![Pulse Observer in action](https://via.placeholder.com/800x400?text=Pulse+Observer+Terminal+Output)  
-*(Replace this placeholder with a real screenshot of the terminal output – upload it to the repo and update the link.)*
 
 ## Features
 
